@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.graphics.Palette
 import com.github.florent37.materialviewpager.header.HeaderDesign
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.header_logo.*
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.sp
 
@@ -39,26 +40,28 @@ class MainActivity : AppCompatActivity() {
             textSize = sp(18)
             setIndicatorColorResource(R.color.blue)
             setViewPager(materialViewPager.viewPager)
+            indicatorHeight = dip(5)
+            underlineHeight = dip(1)
+            underlineColor = Color.WHITE
+            title = "Pandora"
         }
 
         materialViewPager.setMaterialViewPagerListener {
 
             val bitmap = BitmapFactory.decodeResource(resources, headerPics[it])
+            val lightVibrantColor = Palette.from(bitmap).generate().getLightVibrantColor(Color.CYAN)
             val vibrantColor = Palette.from(bitmap).generate().getVibrantColor(Color.CYAN)
-            val darkMutedColor = Palette.from(bitmap).generate().getDarkMutedColor(Color.TRANSPARENT)
+            val darkMutedColor = Palette.from(bitmap).generate().getMutedColor(Color.TRANSPARENT)
             materialViewPager.pagerTitleStrip.apply {
-                setTextColor(vibrantColor)
-                indicatorColor = vibrantColor
-                indicatorHeight = dip(12)
+                indicatorColor = lightVibrantColor
+                describe.apply {
+                    text = "${fragements[it].title}的描述信息,写的长一点试试"
+                    setTextColor(vibrantColor)
+                    strokeColor = darkMutedColor
+                    strokeWidth = 3.0f
+                }
             }
             return@setMaterialViewPagerListener HeaderDesign.fromColorAndDrawable(darkMutedColor, BitmapDrawable(resources, bitmap))
-//            return@setMaterialViewPagerListener when (it) {
-//                0 -> HeaderDesign.fromColorResAndUrl(R.color.blue, "https://drivenlocal.com/wp-content/uploads/2015/10/Material-design.jpg")
-//                1 -> HeaderDesign.fromColorResAndUrl(R.color.lime, "http://img2.imgtn.bdimg.com/it/u=2599205032,2477786774&fm=21&gp=0.jpg")
-//                2 -> HeaderDesign.fromColorResAndUrl(R.color.colorPrimary, "http://p3.image.hiapk.com/uploads/allimg/141124/7730-141124100258.jpg")
-//                3 -> HeaderDesign.fromColorResAndUrl(R.color.colorAccent, "http://i7.download.fd.pchome.net/t_960x600/g1/M00/0C/0F/ooYBAFRh0nWId0RAAAVrsGjvnfsAACEuQHpin0ABWvI634.jpg")
-//                else -> null
-//            }
         }
     }
 

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zst.pandora.widget.StrokeTextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/describe"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:textColor="@android:color/white"
     android:textSize="24sp"
-    tools:text="这是个标题的简介"
-    tools:showIn="@layout/activity_main" />
+    tools:showIn="@layout/activity_main"
+    tools:text="这是个标题的简介" />
