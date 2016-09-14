@@ -14,7 +14,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        app:viewpager_animatedHeaderImage="false"
+        app:viewpager_animatedHeaderImage="true"
         app:viewpager_color="@color/colorAccent"
         app:viewpager_disableToolbar="false"
         app:viewpager_displayToolbarWhenSwipe="true"

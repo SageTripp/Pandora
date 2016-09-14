@@ -7,8 +7,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.alorma.github.sdk.services.repos.UserReposClient
+import com.alorma.gitskarios.core.client.UsernameProvider
+import com.github.florent37.materialviewpager.MaterialViewPagerHelper
 import com.github.florent37.materialviewpager.header.MaterialViewPagerHeaderDecorator
 import kotlinx.android.synthetic.main.fragment_recycle.*
+import retrofit.android.AndroidApacheClient
 import java.util.*
 
 /**
@@ -31,9 +35,26 @@ class RecycleFragment(val title: String, val path: String) : Fragment() {
             layoutManager = GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(MaterialViewPagerHeaderDecorator())
         }
-        for (i in 0..100) {
-            items.add("$title----item$i")
-            recycle.adapter.notifyItemInserted(i)
+
+//        MaterialViewPagerHelper.registerScrollView(activity, noData, null)
+
+        UsernameProvider.setUsernameProviderInterface {
+            return@setUsernameProviderInterface "SageTripp"
         }
+        val client = UserReposClient("SageTripp","desc",5)
+
+        if (path.toInt() % 2 == 0)
+            for (i in 0..100) {
+                items.add("$title----item$i")
+                recycle.adapter.notifyItemInserted(i)
+            }
+        else {
+            flagNoData()
+        }
+    }
+
+    private fun flagNoData() {
+        recycle.visibility = View.GONE
+        noData.visibility = View.VISIBLE
     }
 }
