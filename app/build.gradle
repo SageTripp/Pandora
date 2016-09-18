@@ -34,7 +34,10 @@ dependencies {
     compile('com.github.florent37:materialviewpager:1.2.0@aar') {
         transitive = true
     }
-    compile 'com.github.alorma:github-sdk:3.2.5'
+    compile 'org.kohsuke:github-api:1.77'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.mittsu:markedview:1.0.4@aar'
+    compile 'com.facebook.fresco:fresco:0.13.0'
     compile project(':DroidPlugin')
 }
 

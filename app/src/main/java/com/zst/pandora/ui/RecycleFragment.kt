@@ -1,4 +1,4 @@
-package com.zst.pandora
+package com.zst.pandora.ui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -7,12 +7,13 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.alorma.github.sdk.services.repos.UserReposClient
-import com.alorma.gitskarios.core.client.UsernameProvider
-import com.github.florent37.materialviewpager.MaterialViewPagerHelper
 import com.github.florent37.materialviewpager.header.MaterialViewPagerHeaderDecorator
+import com.zst.pandora.R
+import com.zst.pandora.bean.Item
+import com.zst.pandora.utils.PandoraGitUtils
 import kotlinx.android.synthetic.main.fragment_recycle.*
-import retrofit.android.AndroidApacheClient
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import java.util.*
 
 /**
@@ -22,7 +23,7 @@ import java.util.*
 class RecycleFragment(val title: String, val path: String) : Fragment() {
     constructor() : this("", "")
 
-    private val items = ArrayList<String>()
+    private val items = ArrayList<Item>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_recycle, container, false)
@@ -31,26 +32,41 @@ class RecycleFragment(val title: String, val path: String) : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycle.apply {
-            adapter = RecycleAdapter(items)
+            adapter = RecycleAdapter(activity, items)
             layoutManager = GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(MaterialViewPagerHeaderDecorator())
         }
 
 //        MaterialViewPagerHelper.registerScrollView(activity, noData, null)
+//        doAsync {
+//            try {
+//                val github = GitHub.connectUsingPassword("SageTripp", "zhang0720")
+//                val repo = github.getRepository("SageTripp/PandoraApks")
+//                val files = repo.getDirectoryContent("source/$path")
+//                if (files.size <= 0)
+//                    flagNoData()
+//                files.forEach { file ->
+//                    println("文件:${file.downloadUrl}")
+//                    items.add(Item("${file.downloadUrl}","","",""))
+//                    uiThread {
+//                        recycle.adapter.notifyItemInserted(0)
+//                    }
+//                }
+//            } catch(e: IOException) {
+//                println(e.message)
+//            }
+//        }
 
-        UsernameProvider.setUsernameProviderInterface {
-            return@setUsernameProviderInterface "SageTripp"
+        doAsync {
+            items.addAll(PandoraGitUtils.loadFiles("$path"))
+            if (items.size > 0)
+                uiThread {
+                    recycle.adapter.notifyDataSetChanged()
+                }
+            else
+                flagNoData()
         }
-        val client = UserReposClient("SageTripp","desc",5)
 
-        if (path.toInt() % 2 == 0)
-            for (i in 0..100) {
-                items.add("$title----item$i")
-                recycle.adapter.notifyItemInserted(i)
-            }
-        else {
-            flagNoData()
-        }
     }
 
     private fun flagNoData() {

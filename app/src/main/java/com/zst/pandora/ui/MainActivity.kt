@@ -1,4 +1,4 @@
-package com.zst.pandora
+package com.zst.pandora.ui
 
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.graphics.Palette
 import com.github.florent37.materialviewpager.header.HeaderDesign
+import com.zst.pandora.R
+import com.zst.pandora.ui.RecycleFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.header_logo.*
 import org.jetbrains.anko.dip
@@ -18,10 +20,10 @@ import org.jetbrains.anko.sp
 
 class MainActivity : AppCompatActivity() {
 
-    private val fragements = arrayListOf(RecycleFragment("DEMO", "0"),
-            RecycleFragment("工具", "1"),
-            RecycleFragment("项目", "2"),
-            RecycleFragment("资源", "3"))
+    private val fragements = arrayListOf(RecycleFragment("DEMO", "DEMO"),
+            RecycleFragment("工具", "utils"),
+            RecycleFragment("项目", "projects"),
+            RecycleFragment("资源", "resource"))
     private val headerPics = arrayListOf(R.drawable.demo, R.drawable.utils, R.drawable.project, R.drawable.source)
 
     override fun onCreate(savedInstanceState: Bundle?) {
