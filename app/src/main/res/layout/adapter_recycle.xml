@@ -16,11 +16,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/itemImg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:src="@drawable/no_pic" />
+            app:placeholderImage="@drawable/no_pic"
+            app:viewAspectRatio="0.75" />
+
 
         <TextView
             android:id="@+id/itemTitle"
@@ -35,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="3"
-            android:textSize="16sp"
+            android:textSize="12sp"
             tools:text="这个是描述,测试一下效果,主要就是在预览的时候查看的,没有实际意义" />
     </LinearLayout>
 

@@ -15,9 +15,8 @@ import java.util.*
  * Created by zst on 2016-08-31  0031.
  * 描述:
  */
-class RecycleAdapter(val ctx: Context, val items: ArrayList<Item>) : RecyclerView.Adapter<RecycleAdapter.RecycleHolder>() {
+class RecycleAdapter(val items: ArrayList<Item>) : RecyclerView.Adapter<RecycleAdapter.RecycleHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecycleHolder {
-        Fresco.initialize(ctx)
         return RecycleHolder(LayoutInflater.from(parent.context).inflate(R.layout.adapter_recycle, parent, false))
     }
 
@@ -33,7 +32,6 @@ class RecycleAdapter(val ctx: Context, val items: ArrayList<Item>) : RecyclerVie
         }
     }
 
-
     inner class RecycleHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun setTitle(title: String) {
             itemView.itemTitle.text = title
@@ -42,7 +40,8 @@ class RecycleAdapter(val ctx: Context, val items: ArrayList<Item>) : RecyclerVie
         fun setImg(imageUrl: String) {
             val control = Fresco.newDraweeControllerBuilder().apply {
                 autoPlayAnimations = true
-                setUri(imageUrl)
+                if (imageUrl.isNotEmpty())
+                    setUri(imageUrl)
             }.build()
             itemView.itemImg.controller = control
         }

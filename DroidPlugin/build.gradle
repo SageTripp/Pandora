@@ -1,8 +1,10 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 dependencies {
     provided fileTree(dir: 'lib', include: '*.jar')
     compile fileTree(dir: 'libs', include: '*.jar')
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
 android {
@@ -23,9 +25,13 @@ android {
         instrumentTest.setRoot('tests')
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
+        main.java.srcDirs += 'src/main/kotlin'
     }
 
     lintOptions {
         abortOnError false
     }
+}
+repositories {
+    mavenCentral()
 }

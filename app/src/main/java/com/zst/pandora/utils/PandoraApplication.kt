@@ -2,6 +2,7 @@ package com.zst.pandora.utils
 
 import android.app.Application
 import android.content.Context
+import com.facebook.drawee.backends.pipeline.Fresco
 
 import com.morgoo.droidplugin.PluginHelper
 
@@ -16,6 +17,7 @@ class PandoraApplication : Application() {
         super.onCreate()
         //这里必须在super.onCreate方法之后，顺序不能变
         PluginHelper.getInstance().applicationOnCreate(baseContext)
+        Fresco.initialize(this)
     }
 
     override fun attachBaseContext(base: Context) {
