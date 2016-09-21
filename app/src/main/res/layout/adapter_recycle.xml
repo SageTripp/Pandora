@@ -8,13 +8,13 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="6dp"
     app:cardPreventCornerOverlap="true"
-    app:cardUseCompatPadding="true"
-    app:contentPadding="6dp">
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="8dp">
 
 
         <com.facebook.drawee.view.SimpleDraweeView
@@ -29,6 +29,8 @@
             android:id="@+id/itemTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:textColor="@color/accent_color"
             android:textSize="22sp"
             tools:text="Title" />
@@ -37,6 +39,8 @@
             android:id="@+id/itemDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:maxLines="3"
             android:textSize="12sp"
             tools:text="这个是描述,测试一下效果,主要就是在预览的时候查看的,没有实际意义" />

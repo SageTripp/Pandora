@@ -1,7 +1,11 @@
 package com.zst.pandora
 
-import android.support.design.widget.FloatingActionButton
-import org.jetbrains.anko.backgroundColor
+import com.stylingandroid.prism.Prism
+import com.stylingandroid.prism.Setter
+import com.stylingandroid.prism.filter.Filter
+import com.stylingandroid.prism.setter.ColourSetterFactory
+import com.zst.pandora.prism.StrokeSetter
+import com.zst.pandora.widget.StrokeTextView
 import org.kohsuke.github.GHContent
 import java.io.File
 
@@ -35,6 +39,6 @@ val GHContent.isApk: Boolean get() = name.endsWith(".apk", true)
  */
 val GHContent.isMarkDown: Boolean get() = name.endsWith(".md", true)
 
-internal fun FloatingActionButton.setBackgroundColo(color: Int) {
-    backgroundColor = color
+fun Prism.Builder.stroke(strokeTextView: StrokeTextView,filter: Filter):Prism.Builder{
+    return add(StrokeSetter(strokeTextView,filter))
 }

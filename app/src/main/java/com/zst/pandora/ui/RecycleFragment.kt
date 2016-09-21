@@ -1,6 +1,5 @@
 package com.zst.pandora.ui
 
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -8,14 +7,15 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import cn.bmob.v3.BmobQuery
+import cn.bmob.v3.exception.BmobException
+import cn.bmob.v3.listener.FindListener
 import com.facebook.drawee.backends.pipeline.Fresco
+import com.facebook.imagepipeline.request.ImageRequestBuilder
 import com.github.florent37.materialviewpager.header.MaterialViewPagerHeaderDecorator
 import com.zst.pandora.R
 import com.zst.pandora.bean.Item
-import com.zst.pandora.utils.PandoraGitUtils
 import kotlinx.android.synthetic.main.fragment_recycle.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 import java.util.*
 
 /**
@@ -40,11 +40,16 @@ class RecycleFragment(val title: String = "", val path: String = "", val desc: S
             addItemDecoration(MaterialViewPagerHeaderDecorator())
         }
 
+//        val uri = Uri.parse("res:///" + R.drawable.load_pic)
+        val request = ImageRequestBuilder.newBuilderWithResourceId(R.drawable.load_pic).build()
+
         val control = Fresco.newDraweeControllerBuilder()
                 .setAutoPlayAnimations(true)
-                .setUri(Uri.parse("res:///" + R.drawable.load_pic))
+                .setImageRequest(request)
                 .build()
+        control.animatable?.start()
         loadPic.controller = control
+
     }
 
     /**
@@ -56,17 +61,33 @@ class RecycleFragment(val title: String = "", val path: String = "", val desc: S
         if (isFirst || force) {
             isFirst = false
             flagLoadData()
-            doAsync {
-                items.clear()
-                items.addAll(PandoraGitUtils.loadFiles("$path"))
-                uiThread {
-                    if (items.size > 0) {
-                        flagDataLoaded()
-                        recycle.adapter.notifyDataSetChanged()
-                    } else
-                        flagNoData()
-                }
-            }
+//            doAsync {
+//                items.clear()
+//                items.addAll(PandoraGitUtils.loadFiles("$path"))
+//                uiThread {
+//                    if (items.size > 0) {
+//                        flagDataLoaded()
+//                        recycle.adapter.notifyDataSetChanged()
+//                    } else
+//                        flagNoData()
+//                }
+//            }
+            BmobQuery<Item>()
+                    .addQueryKeys("objectId,name,preview,sketch,flag")
+                    .addWhereEqualTo("flag", path)
+                    .order("createdAt")
+                    .findObjects(object : FindListener<Item>() {
+                        override fun done(returnItems: List<Item>, e: BmobException?) {
+                            items.clear()
+                            items.addAll(returnItems)
+                            if (items.size > 0) {
+                                flagDataLoaded()
+                                recycle.adapter.notifyDataSetChanged()
+                            } else
+                                flagNoData()
+                        }
+                    })
+
         }
     }
 

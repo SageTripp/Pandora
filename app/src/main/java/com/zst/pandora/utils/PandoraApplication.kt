@@ -2,6 +2,7 @@ package com.zst.pandora.utils
 
 import android.app.Application
 import android.content.Context
+import cn.bmob.v3.Bmob
 import com.facebook.drawee.backends.pipeline.Fresco
 
 import com.morgoo.droidplugin.PluginHelper
@@ -17,6 +18,7 @@ class PandoraApplication : Application() {
         super.onCreate()
         //这里必须在super.onCreate方法之后，顺序不能变
         PluginHelper.getInstance().applicationOnCreate(baseContext)
+        Bmob.initialize(this, "96b2bc4a1b94ded32b8c1dc568d430cc")
         Fresco.initialize(this)
     }
 

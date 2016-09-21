@@ -1,6 +1,5 @@
 package com.zst.pandora.ui
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -27,8 +26,9 @@ class RecycleAdapter(val items: ArrayList<Item>) : RecyclerView.Adapter<RecycleA
     override fun onBindViewHolder(holder: RecycleHolder, position: Int) {
         holder.apply {
             setTitle(items[position].name)
-            setImg(items[position].imageUrl)
-            setDesc(items[position].desc)
+            if (null != items[position].preview)
+                setImg(items[position].preview!!.fileUrl)
+            setDesc(items[position].sketch)
         }
     }
 
@@ -46,8 +46,8 @@ class RecycleAdapter(val items: ArrayList<Item>) : RecyclerView.Adapter<RecycleA
             itemView.itemImg.controller = control
         }
 
-        fun setDesc(desc: String) {
-            itemView.itemDesc.text = desc
+        fun setDesc(sketch: String) {
+            itemView.itemDesc.text = sketch
         }
     }
 }

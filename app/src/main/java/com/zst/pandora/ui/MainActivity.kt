@@ -10,8 +10,11 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.graphics.Palette
 import com.github.florent37.materialviewpager.header.HeaderDesign
+import com.stylingandroid.prism.Prism
+import com.stylingandroid.prism.Setter
+import com.stylingandroid.prism.palette.PaletteTrigger
 import com.zst.pandora.R
-import com.zst.pandora.setBackgroundColo
+import com.zst.pandora.stroke
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.header_logo.*
 import org.jetbrains.anko.dip
@@ -19,8 +22,7 @@ import org.jetbrains.anko.onClick
 import org.jetbrains.anko.singleLine
 import org.jetbrains.anko.sp
 
-class MainActivity : AppCompatActivity() {
-
+class MainActivity : AppCompatActivity(), Setter {
     private val fragements = arrayListOf(RecycleFragment("DEMO", "DEMO"),
             RecycleFragment("工具", "utils"),
             RecycleFragment("项目", "projects"),
@@ -50,26 +52,31 @@ class MainActivity : AppCompatActivity() {
             title = "Pandora"
         }
 
+        describe.apply {
+            maxLines = 2
+            singleLine = false
+            strokeWidth = 3.0f
+        }
+
+        val palette = PaletteTrigger()
+        Prism.Builder.newInstance()
+                .add(palette)
+                .add(this)
+                .background(reload, palette.getDarkMutedFilter(palette.colour))
+                .text(describe, palette.getVibrantFilter(palette.colour))
+                .stroke(describe, palette.getLightMutedFilter(palette.colour))
+                .build()
+
+
         materialViewPager.setMaterialViewPagerListener {
             currentFragmentIndex = it
             val bitmap = BitmapFactory.decodeResource(resources, headerPics[it])
-            val lightVibrantColor = Palette.from(bitmap).generate().getLightVibrantColor(Color.CYAN)
-            val vibrantColor = Palette.from(bitmap).generate().getVibrantColor(Color.CYAN)
             val darkMutedColor = Palette.from(bitmap).generate().getMutedColor(Color.TRANSPARENT)
-            reload.apply {
-                setBackgroundColo(darkMutedColor)
-            }
-            materialViewPager.pagerTitleStrip.apply {
-                indicatorColor = lightVibrantColor
-                describe.apply {
-                    maxLines = 2
-                    singleLine = false
-                    text = "${fragements[it].desc}"
-                    setTextColor(vibrantColor)
-                    strokeColor = darkMutedColor
-                    strokeWidth = 3.0f
-                }
-            }
+
+            palette.setBitmap(bitmap)
+
+            describe.text = "${fragements[it].desc}"
+
             fragements[it].loadData()
             return@setMaterialViewPagerListener HeaderDesign.fromColorAndDrawable(darkMutedColor, BitmapDrawable(resources, bitmap))
         }
@@ -92,5 +99,12 @@ class MainActivity : AppCompatActivity() {
                 return fragements[position].title
             }
         }
+    }
+
+    override fun setTransientColour(colour: Int) {
+    }
+
+    override fun setColour(colour: Int) {
+        materialViewPager.pagerTitleStrip.indicatorColor = colour
     }
 }
