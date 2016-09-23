@@ -1,5 +1,6 @@
 package com.zst.pandora.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -36,6 +37,9 @@ class RecycleFragment(val title: String = "", val path: String = "", val desc: S
         isFirst = true
         recycle.apply {
             adapter = RecycleAdapter(items)
+            (adapter as RecycleAdapter).onClick = {
+                startActivity(Intent(activity, ItemDetailsActivity::class.java))
+            }
             layoutManager = GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(MaterialViewPagerHeaderDecorator())
         }

@@ -8,6 +8,7 @@ import com.facebook.drawee.backends.pipeline.Fresco
 import com.zst.pandora.R
 import com.zst.pandora.bean.Item
 import kotlinx.android.synthetic.main.adapter_recycle.view.*
+import org.jetbrains.anko.onClick
 import java.util.*
 
 /**
@@ -29,8 +30,14 @@ class RecycleAdapter(val items: ArrayList<Item>) : RecyclerView.Adapter<RecycleA
             if (null != items[position].preview)
                 setImg(items[position].preview!!.fileUrl)
             setDesc(items[position].sketch)
+            itemView.onClick {
+                onClick(position)
+            }
         }
     }
+
+    var onClick: (p: Int) -> Unit = {}
+
 
     inner class RecycleHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun setTitle(title: String) {
