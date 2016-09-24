@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Pandora</string>
+    <string name="apk_hint">将在APK下载完成后显示</string>
 </resources>

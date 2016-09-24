@@ -38,7 +38,9 @@ class RecycleFragment(val title: String = "", val path: String = "", val desc: S
         recycle.apply {
             adapter = RecycleAdapter(items)
             (adapter as RecycleAdapter).onClick = {
-                startActivity(Intent(activity, ItemDetailsActivity::class.java))
+                val intent = Intent(activity, ItemDetailsActivity::class.java)
+                intent.putExtra("item", items[it])
+                startActivity(intent)
             }
             layoutManager = GridLayoutManager(activity, 2, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(MaterialViewPagerHeaderDecorator())
@@ -65,17 +67,6 @@ class RecycleFragment(val title: String = "", val path: String = "", val desc: S
         if (isFirst || force) {
             isFirst = false
             flagLoadData()
-//            doAsync {
-//                items.clear()
-//                items.addAll(PandoraGitUtils.loadFiles("$path"))
-//                uiThread {
-//                    if (items.size > 0) {
-//                        flagDataLoaded()
-//                        recycle.adapter.notifyDataSetChanged()
-//                    } else
-//                        flagNoData()
-//                }
-//            }
             BmobQuery<Item>()
                     .addQueryKeys("objectId,name,preview,sketch,flag")
                     .addWhereEqualTo("flag", path)
