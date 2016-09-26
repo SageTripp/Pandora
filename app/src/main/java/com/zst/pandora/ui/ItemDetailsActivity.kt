@@ -85,11 +85,17 @@ class ItemDetailsActivity : AppCompatActivity() {
     }
 
     fun checkDescExist(): Boolean {
-        val saveFile = File("$FILE_PATH${File.separator}${item.name}", item.desc?.filename)
-        val isExist = saveFile.exists()
-        if (isExist)
-            desc.loadMDFile(saveFile)
-        return isExist
+        val file = item.desc
+        if (null == file) {
+            desc.setMDText("这里没有描述,还是直接运行程序看结果吧,哇咔咔咔咔咔~~~~~~")
+            return true
+        } else {
+            val saveFile = File("$FILE_PATH${File.separator}${item.name}", file.filename)
+            val isExist = saveFile.exists()
+            if (isExist)
+                desc.loadMDFile(saveFile)
+            return isExist
+        }
     }
 
     fun checkApkExist() {
@@ -125,8 +131,8 @@ class ItemDetailsActivity : AppCompatActivity() {
         val file = item.apk
         val saveFile = File("$FILE_PATH${File.separator}${item.name}", file?.filename)
         file?.download(saveFile, object : DownloadFileListener() {
-            override fun onProgress(progress: Int?, newWorkSpeed: Long) {
-                download.setProgress(progress?.toFloat()!!)
+            override fun onProgress(progress: Int, newWorkSpeed: Long) {
+                download.setProgress(progress.toFloat())
                 println("progress = [$progress], newWorkSpeed = [$newWorkSpeed]")
             }
 
@@ -155,7 +161,11 @@ class ItemDetailsActivity : AppCompatActivity() {
     }
 
     fun playApk() {
-        PluginManager.getInstance().installPackage(apkPath, 0)
+        val p = PluginManager.getInstance().getInstalledPackages(0).filter { it.packageName.equals(apk.packageName) }
+        if (p.size == 0) {
+            val i = PluginManager.getInstance().installPackage(apkPath, 0)
+            Snackbar.make(desc, "$i", Snackbar.LENGTH_LONG).show()
+        }
         val intent = act.packageManager.getLaunchIntentForPackage(apk.packageName)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)

@@ -42,7 +42,6 @@ dependencies {
         transitive = true
     }
     compile 'org.kohsuke:github-api:1.77'
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'cn.bmob.android:bmob-sdk:3.5.0'
     compile 'com.mittsu:markedview:1.0.4@aar'
     compile 'com.stylingandroid.prism:prism:1.0.1'

@@ -29,7 +29,7 @@ import android.content.Context;
  */
 public abstract class Hook {
 
-    private boolean mEnable = false;
+    private boolean mEnable = true;
 
     protected Context mHostContext;
     protected BaseHookHandle mHookHandles;
