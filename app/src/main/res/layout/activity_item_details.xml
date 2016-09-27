@@ -137,7 +137,7 @@
                 android:layout_margin="16dp"
                 app:contentPadding="8dp">
 
-                <com.mittsu.markedview.MarkedView
+                <com.mukesh.MarkdownView
                     android:id="@+id/desc"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />

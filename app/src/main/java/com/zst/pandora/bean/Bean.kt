@@ -1,6 +1,7 @@
 package com.zst.pandora.bean
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
@@ -17,15 +18,20 @@ class Item(var name: String = "", var sketch: String = "", var preview: BmobFile
 class Apk(val ctx: Context, val path: String = "") {
 
     private var info: PackageInfo? = null
+    private var appInfo: ApplicationInfo? = null
 
-    val appName: String by lazy { if (null == info) "" else ctx.packageManager.getApplicationLabel(info?.applicationInfo).toString() }
+    val appName: String by lazy { if (null == info) "" else ctx.packageManager.getApplicationLabel(appInfo).toString() }
     val packageName: String by lazy { if (null == info) "" else info?.packageName!! }
     val versionName: String by lazy { if (null == info) "" else info?.versionName!! }
-    val icon: Drawable? by lazy { if (null == info) null else ctx.packageManager.getApplicationIcon(info?.applicationInfo) }
+    val icon: Drawable? by lazy { if (null == info) null else ctx.packageManager.getApplicationIcon(appInfo) }
 
     init {
         with(ctx.packageManager) {
             info = getPackageArchiveInfo(path, PackageManager.GET_ACTIVITIES)
+            appInfo = info?.applicationInfo
+            appInfo?.sourceDir = path
+            appInfo?.publicSourceDir = path
+            println("${appInfo?.permission}")
         }
     }
 }

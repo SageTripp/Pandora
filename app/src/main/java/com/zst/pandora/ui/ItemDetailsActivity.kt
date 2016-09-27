@@ -33,21 +33,17 @@ class ItemDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_details)
+        item = intent.getSerializableExtra("item") as Item
         setSupportActionBar(toolbar)
-        toolbar.title = "标题"
         toolbar.setNavigationOnClickListener {
             finish()
         }
 
         supportActionBar?.apply {
-            title = "标题"
-            setIcon(R.mipmap.ic_launcher)
+            title = item.name
             setDisplayHomeAsUpEnabled(true)
-            setDisplayShowCustomEnabled(true)
-            setDisplayShowTitleEnabled(true)
-            setDisplayUseLogoEnabled(true)
+            setDefaultDisplayHomeAsUpEnabled(true)
         }
-        item = intent.getSerializableExtra("item") as Item
         download.apply {
             hideProgressOnComplete(true)
             onClick {
@@ -87,13 +83,13 @@ class ItemDetailsActivity : AppCompatActivity() {
     fun checkDescExist(): Boolean {
         val file = item.desc
         if (null == file) {
-            desc.setMDText("这里没有描述,还是直接运行程序看结果吧,哇咔咔咔咔咔~~~~~~")
+            desc.setMarkDownText("这里没有描述,还是直接运行程序看结果吧,哇咔咔咔咔咔~~~~~~")
             return true
         } else {
             val saveFile = File("$FILE_PATH${File.separator}${item.name}", file.filename)
             val isExist = saveFile.exists()
             if (isExist)
-                desc.loadMDFile(saveFile)
+                desc.loadMarkdownFromFile(saveFile)
             return isExist
         }
     }
@@ -113,14 +109,14 @@ class ItemDetailsActivity : AppCompatActivity() {
         file?.download(saveFile, object : DownloadFileListener() {
             override fun onProgress(progress: Int?, newWorkSpeed: Long) {
                 println("progress = [$progress], newWorkSpeed = [$newWorkSpeed]")
-                desc.setMDText("## 文档正在加载中" +
+                desc.setMarkDownText("## 文档正在加载中" +
                         "" +
                         "进度:$progress    速度:$newWorkSpeed")
             }
 
             override fun done(savePath: String?, e: BmobException?) {
                 println("savePath = [$savePath], e = [$e]")
-                desc.loadMDFilePath(savePath)
+                desc.loadMarkdownFromFile(File(savePath))
             }
 
         })

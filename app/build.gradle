@@ -43,7 +43,7 @@ dependencies {
     }
     compile 'org.kohsuke:github-api:1.77'
     compile 'cn.bmob.android:bmob-sdk:3.5.0'
-    compile 'com.mittsu:markedview:1.0.4@aar'
+    compile 'com.mukesh:markdownview:1.0.0'
     compile 'com.stylingandroid.prism:prism:1.0.1'
     compile 'com.stylingandroid.prism:prism-palette:1.0.1'
     compile 'com.facebook.fresco:fresco:0.13.0'
