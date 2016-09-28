@@ -23,10 +23,10 @@ import org.jetbrains.anko.singleLine
 import org.jetbrains.anko.sp
 
 class MainActivity : AppCompatActivity(), Setter {
-    private val fragements = arrayListOf(RecycleFragment("DEMO", "DEMO"),
-            RecycleFragment("工具", "utils"),
-            RecycleFragment("项目", "projects"),
-            RecycleFragment("资源", "resource"))
+    private val fragements = arrayListOf(RecycleFragment("DEMO", "DEMO", "这里都是试验品\r\n嗯~~,比较有意义的试验品"),
+            RecycleFragment("工具", "utils", "工具,用来辅助开发"),
+            RecycleFragment("项目", "projects", "曾经做过的项目"),
+            RecycleFragment("资源", "resource", "网络上收藏的干货"))
     private var currentFragmentIndex = 0
     private val headerPics = arrayListOf(R.drawable.demo, R.drawable.utils, R.drawable.project, R.drawable.source)
 

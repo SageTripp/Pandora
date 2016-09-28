@@ -52,6 +52,7 @@ dependencies {
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:cardview-v7:24.2.1'
     compile 'mbanje.kurt:fabbutton:1.2.2@aar'
+    compile 'com.yydcdut:rxmarkdown:0.0.7'
 }
 
 buildscript {

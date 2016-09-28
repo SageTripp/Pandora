@@ -47,8 +47,9 @@ class StrokeTextView : TextView {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        if (!strokeText.text.equals(text)) {
-            strokeText.text = text
+        if (!strokeText.text.equals(this@StrokeTextView.text)) {
+            strokeText.text = ""
+            strokeText.text = this@StrokeTextView.text
             postInvalidate()
         }
         strokeText.measure(widthMeasureSpec, heightMeasureSpec)
@@ -61,6 +62,11 @@ class StrokeTextView : TextView {
 
     override fun onDraw(canvas: Canvas?) {
         init()
+        if (!strokeText.text.equals(this@StrokeTextView.text)) {
+            strokeText.text = ""
+            strokeText.text = this@StrokeTextView.text
+            postInvalidate()
+        }
         strokeText.draw(canvas)
         super.onDraw(canvas)
     }
